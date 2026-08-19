@@ -1,6 +1,6 @@
 const express = require('express');
 const pool = require('../db/db');
-const { requireAuth } = requirerequire('./auth');
+const { requireAuth } = require('./auth');
 
 const router = express.Router();
 const VALID_STATUSES = ['today', 'progress', 'review', 'revision', 'done'];
