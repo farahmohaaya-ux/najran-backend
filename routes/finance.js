@@ -1,6 +1,6 @@
 const express = require('express');
 const pool = require('../db/db');
-const { requireAuth, requireModule } = requirerequire('./auth');
+const { requireAuth, requireModule } = require('./auth');
 
 const router = express.Router();
 
