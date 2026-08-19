@@ -1,6 +1,6 @@
 const express = require('express');
 const pool = require('../db/db');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth } = requirerequire('./auth');
 const { syncContentRow } = require('../services/metaSync');
 
 const router = express.Router();
