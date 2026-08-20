@@ -1,8 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const pool = require('../db/db');
-const { requireAuth, requireModule } = require('./auth');
-
+const { requireAuth, requireModule } = require('../middleware/auth');
 const router = express.Router();
 
 // GET /api/employees — list all, with today's task counts (team page)
