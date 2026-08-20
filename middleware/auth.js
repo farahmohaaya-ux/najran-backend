@@ -1,27 +1,27 @@
 const jwt = require('jsonwebtoken');
+
 const JWT_SECRET = process.env.JWT_SECRET;
 
 function requireAuth(req, res, next) {
-  const header = req.headers.authorization;
-  if (!header || !header.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'غير مصرح' });
-  }
-  const token = header.split(' ')[1];
+  const header = req.headers.authorization || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) return res.status(401).json({ error: 'ما في تسجيل دخول' });
+
   try {
-    req.user = jwt.verify(token, JWT_SECRET);
+    const payload = jwt.verify(token, JWT_SECRET);
+    req.user = payload;
     next();
   } catch (err) {
-    return res.status(401).json({ error: 'توكن غير صالح' });
+    return res.status(401).json({ error: 'الجلسة منتهية، سجل دخول من جديد' });
   }
 }
 
 function requireModule(moduleKey) {
   return (req, res, next) => {
-    if (!req.user) return res.status(401).json({ error: 'غير مصرح' });
-    if (req.user.roleKey === 'ceo') return next();
-    const perms = req.user.permissions || {};
-    if (perms[moduleKey]) return next();
-    return res.status(403).json({ error: 'ليس لديك صلاحية' });
+    if (!req.user.permissions.includes(moduleKey)) {
+      return res.status(403).json({ error: 'ما عندك صلاحية توصل لهاد الجزء' });
+    }
+    next();
   };
 }
 
